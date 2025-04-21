@@ -8,9 +8,7 @@ mongoose
     .then((conn)=> {
         console.log('connected to database')
     })
-    .catch((error)=>{
-        console.log (`database error : ${error}`)
-    })
+   
 };
 
 module.exports = dbConnection

@@ -4,6 +4,9 @@ const categoryRoute = require('./routes/categoryRoute')
 require('dotenv').config()
 const cors = require ('cors')
 const dbConnection = require('./config/db')
+const ApiError = require('./utils/apiError')
+const globalError = require ('./middleware/errorHandling')
+
 
 
 const app = express()
@@ -28,7 +31,18 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/categories',categoryRoute)
-  
+
+/*
+app.all('*',(req,res,next)=>{
+next( new ApiError (`this page not found! ${req.originalUrl}`, 404))
+});
+*/
+app.use(globalError)
+
+process.on('unhandledRejection', (error) => {
+    console.log (`unhandledRejection Error: ${error.name} | ${error.massage}`)
+})
+
 app.listen(port , ()=>{
 console.log('Application Runninr Successfuly !')
 });

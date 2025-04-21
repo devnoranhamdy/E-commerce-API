@@ -3,7 +3,7 @@ const Category = require ('../models/category')
 const httpStatusText = require ( '../utils/httpStatusText')
 const slugify = require ('slugify')
 const asyncHandler = require('express-async-handler')
-
+const ApiError = require('../utils/apiError')
 
 
 const createCategory = asyncHandler ( async (req,res)=>{
@@ -27,37 +27,40 @@ const getAllCategories = asyncHandler(async (req, res)=>{
 
 });
 
-const getSpecificCategory = asyncHandler(async(req,res)=>{
+const getSpecificCategory = asyncHandler(async(req,res,next)=>{
     const { id } = req.params ; 
     const SpecificCategory =  await Category.findById(id,{'__v': 0})
     if (!SpecificCategory){
-         return res.status(400).json({ status : httpStatusText.FAIL , data : null , message : " not found !" })
 
+        return next(new ApiError('category not found' , 400)) ;
     }
+         
          return res.status(200).json({ status : httpStatusText.SUCCESS , data : SpecificCategory })
     
 });
 
-const deleteCategory = asyncHandler(async(req,res)=>{
+const deleteCategory = asyncHandler(async(req,res ,next)=>{
      const { id  } = req.params; 
      const deleteCategory = await Category.findByIdAndDelete(id)
-     res.status(200).json({ status : httpStatusText.SUCCESS  , message : " deleted successfuly " })
+     if (!deleteCategory)
+        {
+            return next( new ApiError(' not found ',400))
+   
+        }
+    return res.status(200).json({ status : httpStatusText.SUCCESS  , message : " deleted successfuly " })
     
 });
 
-const updateCategory = asyncHandler(async(req,res)=>{
+const updateCategory = asyncHandler(async(req,res,next)=>{
     const {  id  } = req.params ;
     const { name }  = req.body ; 
     const updatedCategory = await Category.findByIdAndUpdate(id ,{name , slug : slugify(name)} , {new : true})
     if (!updatedCategory){
-        return res.status(400).json({ status : httpStatusText.FAIL , data : null , message : " not found !" })
-
+        return next( new ApiError(' not found ',400))
    }
    return res.status(200).json({ status : httpStatusText.SUCCESS , data : updatedCategory , message : " updated successfuly " })
    
 });
-
-
 
 module.exports = 
 {
