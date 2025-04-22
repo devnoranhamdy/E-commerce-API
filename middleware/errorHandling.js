@@ -1,16 +1,5 @@
 require('dotenv').config()
 
-const globalError = (error , req, res , next)=>{
-   if (process.env.NODE_ENV == 'development') 
-    {
-        senErrorsForDev(error , res)
-    } else {
-        senErrorsForProdaction(error , res)
-
-    }
-    
-}
-
 const senErrorsForDev  = (error , res)=>{
     res.status(error.statusCode || 500 )
     .json({ 
@@ -26,6 +15,19 @@ const senErrorsForProdaction  = (error , res)=>{
         , message : error.message || 'Internal Server Error' 
          })
 }
+
+
+const globalError = (error , req, res , next)=>{
+   if (process.env.NODE_ENV === 'development') 
+    {
+        senErrorsForDev(error , res)
+    } else {
+        senErrorsForProdaction(error , res)
+
+    }
+    
+}
+
 
 
 module.exports = globalError

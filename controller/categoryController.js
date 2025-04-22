@@ -1,7 +1,7 @@
-const express = require ('express')
-const Category = require ('../models/category')
 const slugify = require ('slugify')
 const asyncHandler = require('express-async-handler')
+const Category = require ('../models/category')
+
 const ApiError = require('../utils/apiError')
 const httpStatusText = require ( '../utils/httpStatusText')
 
@@ -18,11 +18,11 @@ exports.createCategory = asyncHandler ( async (req,res)=>{
 
 exports.getAllCategories = asyncHandler(async (req, res)=>{
 
-    const query = req.query
-    const limit = query.limit*1 || 10
-    const page =  query.page*1 || 1
-    const skip = (page -1 )*limit
-    const allCategories =  await Category.find({},{"__v": 0}).limit(limit).skip(skip)
+        const { limit, page } = req.query
+        const limitNum = limit * 1 || 10
+        const pageNum = page * 1 || 1
+        const skip = (pageNum - 1) * limitNum;
+    const allCategories =  await Category.find({},{"__v": 0}).limit(limitNum).skip(skip)
     res.status(200).json({ status : httpStatusText.SUCCESS , result : allCategories.length , page ,  data : allCategories   })
 
 });
