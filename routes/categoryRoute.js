@@ -1,16 +1,19 @@
 const express = require ('express')
 const router = express.Router()
-const categoryController = require('../controller/categoryController')
+const {getSpecificCategory ,updateCategory , deleteCategory ,getAllCategories , createCategory } = require('../controller/categoryController')
+const {param , validationResult}= require('express-validator')
+const httpStatusText = require ( '../utils/httpStatusText')
+const { getCategoryValidator , deleteCategoryValidator, updateCategoryValidator , creatCategoryValidator}= require('../utils/validators/categoryValidator')
 
 router.route('/')
-.post(categoryController.createCategory)
-.get(categoryController.getAllCategories)
+.post(creatCategoryValidator, createCategory)
+.get(getAllCategories)
 
 
 router.route('/:id')
-.delete(categoryController.deleteCategory)
-.put(categoryController.updateCategory)
-.get(categoryController.getSpecificCategory)
+.delete(deleteCategoryValidator,deleteCategory)
+.put( updateCategoryValidator,updateCategory)
+.get(getCategoryValidator,getSpecificCategory)
 
 
 

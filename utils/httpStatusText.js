@@ -1,8 +1,9 @@
 
 const SUCCESS = "success"
-
+const FAIL = 'fail'
 
 module.exports= {
-    SUCCESS 
+    SUCCESS ,
+    FAIL
 
 }

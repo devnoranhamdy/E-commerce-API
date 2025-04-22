@@ -1,12 +1,12 @@
 const express = require ('express')
 const Category = require ('../models/category')
-const httpStatusText = require ( '../utils/httpStatusText')
 const slugify = require ('slugify')
 const asyncHandler = require('express-async-handler')
 const ApiError = require('../utils/apiError')
+const httpStatusText = require ( '../utils/httpStatusText')
 
 
-const createCategory = asyncHandler ( async (req,res)=>{
+exports.createCategory = asyncHandler ( async (req,res)=>{
     
         const { name } = req.body ; 
         const newCategory = new Category({name , slug : slugify(name)})
@@ -16,7 +16,7 @@ const createCategory = asyncHandler ( async (req,res)=>{
 }
 );
 
-const getAllCategories = asyncHandler(async (req, res)=>{
+exports.getAllCategories = asyncHandler(async (req, res)=>{
 
     const query = req.query
     const limit = query.limit*1 || 10
@@ -27,9 +27,10 @@ const getAllCategories = asyncHandler(async (req, res)=>{
 
 });
 
-const getSpecificCategory = asyncHandler(async(req,res,next)=>{
+exports.getSpecificCategory = asyncHandler(async(req,res,next)=>{
     const { id } = req.params ; 
     const SpecificCategory =  await Category.findById(id,{'__v': 0})
+      
     if (!SpecificCategory){
 
         return next(new ApiError('category not found' , 400)) ;
@@ -39,7 +40,7 @@ const getSpecificCategory = asyncHandler(async(req,res,next)=>{
     
 });
 
-const deleteCategory = asyncHandler(async(req,res ,next)=>{
+exports.deleteCategory = asyncHandler(async(req,res ,next)=>{
      const { id  } = req.params; 
      const deleteCategory = await Category.findByIdAndDelete(id)
      if (!deleteCategory)
@@ -51,7 +52,7 @@ const deleteCategory = asyncHandler(async(req,res ,next)=>{
     
 });
 
-const updateCategory = asyncHandler(async(req,res,next)=>{
+exports.updateCategory = asyncHandler(async(req,res,next)=>{
     const {  id  } = req.params ;
     const { name }  = req.body ; 
     const updatedCategory = await Category.findByIdAndUpdate(id ,{name , slug : slugify(name)} , {new : true})
@@ -62,13 +63,5 @@ const updateCategory = asyncHandler(async(req,res,next)=>{
    
 });
 
-module.exports = 
-{
-    createCategory ,
-    getAllCategories ,
-    deleteCategory ,
-    getSpecificCategory ,
-    updateCategory
 
-}
 
