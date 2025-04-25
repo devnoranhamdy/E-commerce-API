@@ -9,6 +9,10 @@ router.route('/')
 .post(creatCategoryValidator, createCategory)
 .get(getAllCategories)
 
+const supCategoryRoute = require('./supCategoryRoute')
+
+router.use('/:categoryId/subcategory',supCategoryRoute )
+
 
 router.route('/:id')
 .delete(deleteCategoryValidator,deleteCategory)

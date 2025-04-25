@@ -6,6 +6,8 @@ require("dotenv").config();
 const dbConnection = require("./config/db");
 const ApiError = require("./utils/apiError");
 const globalError = require("./middleware/errorHandling");
+const supCategoryRoute = require ('./routes/supCategoryRoute')
+
 
 const app = express();
 app.use(express.json());
@@ -24,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/categories", categoryRoute);
+app.use ('/api/supCategories', supCategoryRoute)
 
 /*
 app.all('*',(req,res,next)=>{
