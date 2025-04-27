@@ -10,7 +10,7 @@ const ApiError = require('../utils/apiError')
       const hashedPassword = await bcrypt.hash(req.body.password , 10)
       const newUser =  new User ({...req.body , password : hashedPassword }) 
       await newUser.save()
-      const token =  await generateJWT({email : newUser.email, id : newUser._id})
+      const token =  await generateJWT({email : newUser.email, id : newUser._id ,role : newUser.role})
       res.status(201).json({status : httpStatusText.SUCCESS , data : newUser , token , message : 'signup succeccfuly'})
 
  }); 
@@ -22,14 +22,13 @@ const ApiError = require('../utils/apiError')
         {
          return next( new ApiError('wrong email or password'))
         }
-   
-     const matchedPassword = bcrypt.compare(password ,user.password)
+     const matchedPassword = await bcrypt.compare(password ,user.password)
      if (!matchedPassword)
      {
-      return next( new ApiError('wrong email or password'))
+      return next( new ApiError('wrong email or password' , 401))
      }
 
-     const token =  await generateJWT({email : user.email, id : user._id})
+     const token =  await generateJWT({email : user.email, id : user._id ,role : user.role})
      res.status(201).json({status : httpStatusText.SUCCESS , data : user , token , message : 'login succeccfuly'})
 
 
