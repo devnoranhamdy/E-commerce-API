@@ -8,6 +8,7 @@ const ApiError = require("./utils/apiError");
 const globalError = require("./middleware/errorHandling");
 const supCategoryRoute = require ('./routes/supCategoryRoute')
 const brandRoute = require("./routes/brandRoute");
+const productRoute = require("./routes/productRoute");
 
 
 const app = express();
@@ -27,8 +28,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/categories", categoryRoute);
-app.use ('/api/supCategories', supCategoryRoute)
+app.use ('/api/subCategories', supCategoryRoute)
 app.use("/api/brands", brandRoute);
+app.use("/api/product", productRoute);
+
 
 /*
 app.all('*',(req,res,next)=>{
