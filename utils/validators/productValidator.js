@@ -1,7 +1,8 @@
 const slugify = require ('slugify')
 const {check }= require('express-validator')
 const ValidatorMiddleware = require('../../middleware/validators')
-
+const Category= require ("../../models/category")
+const SubCategory = require('../../models/supCategory')
 
 exports.getProductValidator = [
     check('id').isMongoId().withMessage(' invalid product id format ')  , ValidatorMiddleware
@@ -73,7 +74,7 @@ exports.creatProductValidator = [
     .withMessage('Product must be belong to a category')
     .isMongoId()
     .withMessage('Invalid ID formate')
-    /*
+    // check id for categories in product is exist in db
     .custom((categoryId) =>
       Category.findById(categoryId).then((category) => {
         if (!category) {
@@ -82,12 +83,13 @@ exports.creatProductValidator = [
           );
         }
       })
-    )*/,
+    ),
 
   check('subcategories')
     .optional()
     .isMongoId()
-    .withMessage('Invalid ID formate')/*
+    .withMessage('Invalid ID formate')
+    // check id for subcategories in product is exist in db
     .custom((subcategoriesIds) =>
       SubCategory.find({ _id: { $exists: true, $in: subcategoriesIds } }).then(
         (result) => {
@@ -97,6 +99,7 @@ exports.creatProductValidator = [
         }
       )
     )
+      /*
     .custom((val, { req }) =>
       SubCategory.find({ category: req.body.category }).then(
         (subcategories) => {

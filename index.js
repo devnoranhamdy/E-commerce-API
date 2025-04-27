@@ -9,6 +9,7 @@ const globalError = require("./middleware/errorHandling");
 const supCategoryRoute = require ('./routes/supCategoryRoute')
 const brandRoute = require("./routes/brandRoute");
 const productRoute = require("./routes/productRoute");
+const userRoute = require("./routes/userRoute");
 
 
 const app = express();
@@ -31,7 +32,7 @@ app.use("/api/categories", categoryRoute);
 app.use ('/api/subCategories', supCategoryRoute)
 app.use("/api/brands", brandRoute);
 app.use("/api/product", productRoute);
-
+app.use("/api/user", userRoute);
 
 /*
 app.all('*',(req,res,next)=>{
