@@ -10,6 +10,7 @@ const supCategoryRoute = require ('./routes/supCategoryRoute')
 const brandRoute = require("./routes/brandRoute");
 const productRoute = require("./routes/productRoute");
 const userRoute = require("./routes/userRoute");
+const authRoute = require("./routes/authRoute");
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use ('/api/subCategories', supCategoryRoute)
 app.use("/api/brands", brandRoute);
 app.use("/api/product", productRoute);
 app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
 
 /*
 app.all('*',(req,res,next)=>{
@@ -48,3 +50,4 @@ process.on("unhandledRejection", (error) => {
 app.listen(port, () => {
   console.log("Application Runninr Successfuly !");
 });
+

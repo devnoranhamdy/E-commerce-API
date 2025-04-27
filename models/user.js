@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema(
     },
     phone: { type: String },
     avater: { type: String }, 
-    active : { type : Boolean , default : true}
+    active : { type : Boolean , default : true} , 
+    token : { type : String}
   },
   { timestamps: true }
 );
