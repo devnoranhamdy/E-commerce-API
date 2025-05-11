@@ -99,7 +99,6 @@ exports.creatProductValidator = [
         }
       )
     )
-      /*
     .custom((val, { req }) =>
       SubCategory.find({ category: req.body.category }).then(
         (subcategories) => {
@@ -116,7 +115,7 @@ exports.creatProductValidator = [
           }
         }
       )
-    )*/,
+    ),
 
   check('brand').optional().isMongoId().withMessage('Invalid ID formate'),
   check('ratingsAverage')
