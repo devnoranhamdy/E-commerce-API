@@ -7,8 +7,9 @@ const ApiError = require('../utils/apiError')
 
  exports.signup = asyncHandelar ( async (req,res)=>{
 
+       const avatarUrl = req.file ? req.file.path : null;
       const hashedPassword = await bcrypt.hash(req.body.password , 10)
-      const newUser =  new User ({...req.body , password : hashedPassword }) 
+      const newUser =  new User ({...req.body , password : hashedPassword , avater : avatarUrl  }) 
       await newUser.save()
       const token =  await generateJWT({email : newUser.email, id : newUser._id ,role : newUser.role})
       res.status(201).json({status : httpStatusText.SUCCESS , data : newUser , token , message : 'signup succeccfuly'})

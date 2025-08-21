@@ -7,9 +7,10 @@ const bcrypt = require ('bcrypt')
 
 exports.createUser = asyncHandler ( async (req,res)=>{
     
+        const avatarUrl = req.file ? req.file.path : null;
         req.body.slug = slugify(req.body.name)
         const hashedPassword =  await bcrypt.hash(req.body.password , 10)
-        const newUser = new User({...req.body , password : hashedPassword })
+        const newUser = new User({...req.body , password : hashedPassword  , avater : avatarUrl })
         await newUser.save()
         res.status(201).json({ status : httpStatusText.SUCCESS , data : newUser , message : "new User added successfuly"})
    

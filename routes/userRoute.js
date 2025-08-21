@@ -4,9 +4,10 @@ const {getSpecificUser ,updateUser , deleteUser ,getAllUsers , createUser } = re
 const { getUserValidator , deleteUserValidator, updateUserValidator , creatUserValidator}= require('../utils/validators/userValidator')
 const { protect , allowedTo } = require ('../middleware/decodedToken')
 const role = require('../utils/roles')
+const upload = require('../middleware/uploadphoto')
 
 router.route('/')
-.post( protect ,  allowedTo(role.ADMIN), creatUserValidator,createUser)
+.post(upload.single('avater'),  protect ,  allowedTo(role.ADMIN), creatUserValidator,createUser)
 .get(protect ,  allowedTo(role.ADMIN),getAllUsers)
 
 
