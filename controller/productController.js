@@ -16,12 +16,22 @@ exports.createProduct = asyncHandler ( async (req,res)=>{
 
 exports.getAllProducts = asyncHandler(async (req, res)=>{
 
-        const { limit, page } = req.query
-        const limitNum = limit * 1 || 10
-        const pageNum = page * 1 || 1
-        const skip = (pageNum - 1) * limitNum;
-    const allProducts =  await Product.find({},{"__v": 0}).populate({ path :"category", select : "name-_id"}).limit(limitNum).skip(skip)
-    res.status(200).json({ status : httpStatusText.SUCCESS , result : allProducts.length , page ,  data : allProducts   })
+        //filter
+        const querySringObj = {...req.query}
+        const excludeFilds = [ 'page' , 'limit']
+        excludeFilds.forEach((filed)=> delete querySringObj[filed])
+        let queryStr = JSON.stringify(querySringObj) ;
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+        const finalQuery = JSON.parse(queryStr);
+        console.log ({ 'finalQuery' : finalQuery})
+
+        //pagination
+        const limit = req.query.limit * 1 || 10
+        const page  = req.query.page * 1 || 1
+        const skip = (page  - 1) * limit;
+        
+        const allProducts =  await Product.find(finalQuery,{"__v": 0}).populate({ path :"category", select : "name-_id"}).limit(limit).skip(skip)
+        res.status(200).json({ status : httpStatusText.SUCCESS , result : allProducts.length , page ,  data : allProducts   })
 
 });
 

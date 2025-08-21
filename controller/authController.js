@@ -18,7 +18,7 @@ const ApiError = require('../utils/apiError')
  exports.login = asyncHandelar ( async (req,res,next)=>{
     const { email , password } = req.body
      const user = await User.findOne({email})
-     if (!user)
+     if (!user )
         {
          return next( new ApiError('wrong email or password'))
         }

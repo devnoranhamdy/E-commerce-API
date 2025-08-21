@@ -41,7 +41,7 @@ exports.signupValidator = [
 
     check('avatar').optional(),
     check('role').optional(),
-    check('phone').isMobilePhone('ar-EG').withMessage('invalid phone number'),
+    check('phone').isMobilePhone().withMessage('invalid phone number'),
 
   ValidatorMiddleware,
 ];
