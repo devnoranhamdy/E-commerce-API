@@ -25,10 +25,14 @@
     "mongoose": "^8.13.2",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
-    "multer-storage-cloudinary": "^4.0.0",
+    "multer-storage-cloudinary": "^2.2.1",
     "nodemon": "^3.1.9",
     "qs": "^6.14.0",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "validator": "13.15.23"
+  },
+  "overrides": {
+    "validator": "13.15.23"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
